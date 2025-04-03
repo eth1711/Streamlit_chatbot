@@ -1,8 +1,18 @@
 import streamlit as st
 import google.generativeai as genai
 
+st.write("Available secrets:", list(st.secrets.keys()))
+
+
+# Ensure API key exists
+if "API_KEY" in st.secrets:
+    GOOGLE_API_KEY = st.secrets["API_KEY"]
+    st.write("API Key found!")  # Debug message
+else:
+    st.error("API Key not found! Make sure it is set in Streamlit Secrets.")
+
 # Configure Gemini API
-GOOGLE_API_KEY = st.secrets["API_KEY"]
+# GOOGLE_API_KEY = st.secrets["API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
