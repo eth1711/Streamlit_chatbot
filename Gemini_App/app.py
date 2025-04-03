@@ -11,7 +11,16 @@ def initialize_session_state():
         st.session_state.messages = []
 
 def get_gemini_response(prompt):
-    response = model.generate_content(prompt)
+    # Build the conversation history as context with the last 5 messages
+    conversation_history = ""
+    for message in st.session_state.messages[-5:]:  # Only use the last 5 messages
+        conversation_history += f"{message['role']}: {message['content']}\n"
+    
+    # Append the new prompt to the history
+    conversation_history += f"user: {prompt}\n"
+
+    # Use the conversation history as the full prompt for Gemini
+    response = model.generate_content(conversation_history)
     return response.text
 
 def main():
